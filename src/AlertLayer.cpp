@@ -67,7 +67,7 @@ namespace capeling {
     
         m_mainLayer = CCLayer::create();
         addChild(m_mainLayer);
-    
+
         TextArea* textArea = nullptr;
         float height = 0.f;
     
@@ -129,7 +129,10 @@ namespace capeling {
         }
         m_buttonMenu->setContentWidth(width - 40.f);
         m_buttonMenu->setLayout(RowLayout::create()->setGap(fmaxf(5.f, 15.f - (btns.size() - 2) * 5.f)));
-    
+
+        m_width = width;
+        m_height = height;
+
         return true;
     }
     
@@ -168,16 +171,49 @@ namespace capeling {
             m_nZOrder = 105;
         m_scene->addChild(this, this->m_nZOrder);
     }
-    
-    void AlertLayer::show() {
-        if(m_noElasticity) {
+
+    void AlertLayer::show(AlertLayerAnimation animation) {
+        if(m_noElasticity || animation == AlertLayerAnimation::None) {
             addToScene();
         } else {
+            auto director = CCDirector::get();
+            auto winSize = director->getWinSize();
             float opacity = getOpacity();
-            m_mainLayer->setScale(0.f);
-    
-            auto scale = CCScaleTo::create(0.5f, 1.f);
-            auto ease = CCEaseElasticOut::create(scale, 0.6f);
+            
+            CCActionInterval* action;
+            switch(animation) {
+                case AlertLayerAnimation::MoveLeft: {
+                    log::debug("{}", winSize.width - m_width);
+                    auto pos = m_mainLayer->getPosition();
+                    m_mainLayer->setPositionX(director->getScreenRight());
+                    action = CCMoveTo::create(0.5f, pos);
+                    break;
+                }
+                case AlertLayerAnimation::MoveRight: {
+                    auto pos = m_mainLayer->getPosition();
+                    m_mainLayer->setPositionX(-winSize.width);
+                    action = CCMoveTo::create(0.5f, pos);
+                    break;
+                }
+                case AlertLayerAnimation::MoveUp: {
+                    auto pos = m_mainLayer->getPosition();
+                    m_mainLayer->setPositionY(-winSize.height);
+                    action = CCMoveTo::create(0.5f, pos);
+                    break;
+                }
+                case AlertLayerAnimation::MoveDown: {
+                    auto pos = m_mainLayer->getPosition();
+                    m_mainLayer->setPositionY(director->getScreenTop());
+                    action = CCMoveTo::create(0.5f, pos);
+                    break;
+                }
+                default: {
+                    m_mainLayer->setScale(0.f);
+                    action = CCScaleTo::create(0.5f, 1.f);
+                    break;
+                }
+            }
+            auto ease = CCEaseElasticOut::create(action, 0.6f);
             m_mainLayer->runAction(ease);
             addToScene();
     
@@ -188,6 +224,9 @@ namespace capeling {
             m_delegate->alertShown(this);
     
         setVisible(true);
+    }
+    
+    void AlertLayer::show() {
     }
     
     void AlertLayer::onBtn(cocos2d::CCObject* sender) {
