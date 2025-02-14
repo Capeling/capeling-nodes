@@ -6,4 +6,4 @@ add_library(${PROJECT_NAME} INTERFACE)
 file(GLOB_RECURSE SOURCES src/*.cpp)
 
 target_sources(${PROJECT_NAME} INTERFACE ${SOURCES})
-target_include_directories(${PROJECT_NAME} INTERFACE include)
+target_include_directories(${PROJECT_NAME} INTERFACE include/capeling)

@@ -65,7 +65,7 @@ namespace capeling {
         AlertLayerDelegate* m_delegate;
     };
     
-    class TWEAKS_DLL AlertLayerDelegate {
+    class AlertLayerDelegate {
     public:
         virtual void alertClicked(AlertLayer* alert, int btn) = 0;
         virtual void alertShown(AlertLayer* alert) = 0;
