@@ -226,9 +226,6 @@ namespace capeling {
         setVisible(true);
     }
     
-    void AlertLayer::show() {
-    }
-    
     void AlertLayer::onBtn(cocos2d::CCObject* sender) {
         if(m_usedEscape)
             return;
