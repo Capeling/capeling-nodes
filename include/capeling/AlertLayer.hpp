@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Geode/DefaultInclude.hpp>
-
 namespace capeling {
 
     enum class AlertLayerAnimation {
