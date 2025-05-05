@@ -62,11 +62,11 @@ namespace capeling {
         refreshLabel();
 
         if (!v) {
-            m_placeholderLabel->setColor({ 255, 255, 255});
-            m_placeholderLabel->setScale(m_maxLabelScale + .2f);
+            m_textLabel->setColor({ 255, 255, 255});
+            m_textLabel->setScale(m_maxLabelScale + .2f);
         }
 
-        m_placeholderLabel->setFntFile(v ? "bigFont.fnt" : "goldFont.fnt");
+        m_textLabel->setFntFile(v ? "bigFont.fnt" : "goldFont.fnt");
 
         m_enabled = v;
     }
